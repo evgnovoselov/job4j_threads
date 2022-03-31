@@ -11,21 +11,13 @@ public class ThreadState {
         Thread second = new Thread(() -> {
             System.out.println(Thread.currentThread().getName());
         });
-        System.out.println("cur " + Thread.currentThread().getState());
-        System.out.println("first " + first.getState());
-        System.out.println("second " + second.getState());
-        System.out.println();
         first.start();
         second.start();
-        while (first.getState() != Thread.State.TERMINATED) {
-            System.out.println("cur " + Thread.currentThread().getState());
-            System.out.println("first " + first.getState());
-            System.out.println("second " + second.getState());
-            System.out.println();
+        while (true) {
+            if (first.getState() == Thread.State.TERMINATED && second.getState() == Thread.State.TERMINATED) {
+                break;
+            }
         }
-        System.out.println("cur " + Thread.currentThread().getState());
-        System.out.println("first " + first.getState());
-        System.out.println("second " + second.getState());
-        System.out.println();
+        System.out.println("Done! Other threads terminated!");
     }
 }
