@@ -15,9 +15,9 @@ public class ThreadState {
         second.start();
         while (true) {
             if (first.getState() == Thread.State.TERMINATED && second.getState() == Thread.State.TERMINATED) {
+                System.out.println("Done! Other threads terminated!");
                 break;
             }
         }
-        System.out.println("Done! Other threads terminated!");
     }
 }
