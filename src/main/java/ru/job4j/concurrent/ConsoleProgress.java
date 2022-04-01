@@ -8,23 +8,27 @@ public class ConsoleProgress implements Runnable {
     public void run() {
         char[] process = new char[]{'\\', '|', '/'};
         int index = 0;
-        while (!Thread.currentThread().isInterrupted()) {
-            System.out.print("\rLoading: " + process[index++]);
-            if (index == process.length - 1) {
-                index = 0;
-            }
-            try {
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                System.out.print("\rLoading: " + process[index++]);
+                if (index == process.length) {
+                    index = 0;
+                }
                 Thread.sleep(500);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
             }
+        } catch (InterruptedException e) {
+            return;
         }
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Thread progress = new Thread(new ConsoleProgress());
         progress.start();
-        Thread.sleep(5000);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         progress.interrupt();
     }
 }
