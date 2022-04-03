@@ -5,6 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * Загрузка файла.
+ */
 public class Wget implements Runnable {
     private final String url;
     private final int speed;
