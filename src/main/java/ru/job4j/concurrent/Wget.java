@@ -19,8 +19,6 @@ public class Wget implements Runnable {
 
     @Override
     public void run() {
-        Thread progress = new Thread(new ConsoleProgress());
-        progress.start();
         String fileName = url.substring(url.lastIndexOf("/") + 1);
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream out = new FileOutputStream("files/tmp/" + fileName)) {
@@ -35,14 +33,16 @@ public class Wget implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        progress.interrupt();
     }
 
     public static void main(String[] args) throws InterruptedException {
         String url = args[0];
         int speed = Integer.parseInt(args[1]);
+        Thread progress = new Thread(new ConsoleProgress());
+        progress.start();
         Thread wget = new Thread(new Wget(url, speed));
         wget.start();
         wget.join();
+        progress.interrupt();
     }
 }
