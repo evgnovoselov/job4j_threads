@@ -36,10 +36,18 @@ public class Wget implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        verification(args);
         String url = args[0];
         int speed = Integer.parseInt(args[1]);
         Thread wget = new Thread(new Wget(url, speed));
         wget.start();
         wget.join();
+    }
+
+    private static void verification(String[] args) {
+        if (args.length < 2) {
+            throw new IllegalArgumentException("Not set args. Set args: url speed");
+        }
+
     }
 }
