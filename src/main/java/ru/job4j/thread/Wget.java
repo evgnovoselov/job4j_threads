@@ -22,7 +22,7 @@ public class Wget implements Runnable {
     public void run() {
         String fileName = url.substring(url.lastIndexOf("/") + 1);
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
-             FileOutputStream out = new FileOutputStream("files/tmp/" + fileName)) {
+             FileOutputStream out = new FileOutputStream(fileName)) {
             byte[] dataBuffer = new byte[LENGTH_BUFFER];
             int byteRead;
             long bytesWritten = 0;
@@ -64,7 +64,13 @@ public class Wget implements Runnable {
         if (args.length < 2) {
             throw new IllegalArgumentException("Not set args. Need set args: <url> <speed>. Where speed - byte/s.");
         }
-        if (Integer.parseInt(args[1]) < 1) {
+        int speed;
+        try {
+            speed = Integer.parseInt(args[1]);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Not valid arg <speed>. Need set args: <url> <speed>. Where speed - byte/s.");
+        }
+        if (speed < 1) {
             throw new IllegalArgumentException("Not valid arg <speed>. Need set number more 1 byte/s.");
         }
     }
