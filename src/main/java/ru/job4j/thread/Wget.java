@@ -28,18 +28,14 @@ public class Wget implements Runnable {
             long bytesWritten = 0;
             long startTime = System.currentTimeMillis();
             long deltaTime;
-            int sleep;
             while ((bytesRead = in.read(dataBuffer, 0, LENGTH_BUFFER)) != -1) {
                 out.write(dataBuffer, 0, bytesRead);
                 bytesWritten += bytesRead;
                 if (bytesWritten >= speed) {
                     deltaTime = System.currentTimeMillis() - startTime;
                     if (deltaTime < 1000) {
-                        sleep = (int) (1000 - deltaTime);
-                    } else {
-                        sleep = 0;
+                        Thread.sleep((int) (1000 - deltaTime));
                     }
-                    Thread.sleep(sleep);
                     startTime = System.currentTimeMillis();
                     bytesWritten = 0;
                 }
