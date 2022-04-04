@@ -9,6 +9,7 @@ import java.net.URL;
  * Загрузка файла.
  */
 public class Wget implements Runnable {
+    private static final int LENGTH_BUFFER = 1024;
     private final String url;
     private final int speed;
 
@@ -22,11 +23,26 @@ public class Wget implements Runnable {
         String fileName = url.substring(url.lastIndexOf("/") + 1);
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream out = new FileOutputStream("files/tmp/" + fileName)) {
-            byte[] dataBuffer = new byte[speed];
+            byte[] dataBuffer = new byte[LENGTH_BUFFER];
             int byteRead;
-            while ((byteRead = in.read(dataBuffer, 0, speed)) != -1) {
+            long bytesWritten = 0;
+            long startTime = System.currentTimeMillis();
+            long deltaTime;
+            int sleep;
+            while ((byteRead = in.read(dataBuffer, 0, LENGTH_BUFFER)) != -1) {
                 out.write(dataBuffer, 0, byteRead);
-                Thread.sleep(1000);
+                bytesWritten += LENGTH_BUFFER;
+                if (bytesWritten >= speed) {
+                    deltaTime = System.currentTimeMillis() - startTime;
+                    if (deltaTime < 1000) {
+                        sleep = (int) (1000 - deltaTime);
+                    } else {
+                        sleep = 0;
+                    }
+                    Thread.sleep(sleep);
+                    startTime = System.currentTimeMillis();
+                    bytesWritten = 0;
+                }
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -46,8 +62,10 @@ public class Wget implements Runnable {
 
     private static void verification(String[] args) {
         if (args.length < 2) {
-            throw new IllegalArgumentException("Not set args. Set args: url speed");
+            throw new IllegalArgumentException("Not set args. Need set args: <url> <speed>. Where speed - byte/s.");
         }
-
+        if (Integer.parseInt(args[1]) < 1) {
+            throw new IllegalArgumentException("Not valid arg <speed>. Need set number more 1 byte/s.");
+        }
     }
 }
