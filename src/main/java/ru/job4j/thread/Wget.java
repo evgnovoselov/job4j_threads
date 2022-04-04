@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
- * Загрузка файла.
+ * Загрузка файла с ограничением по скорости.
  */
 public class Wget implements Runnable {
     private static final int LENGTH_BUFFER = 1024;
