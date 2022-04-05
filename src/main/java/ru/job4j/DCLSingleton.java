@@ -1,5 +1,8 @@
 package ru.job4j;
 
+/**
+ * Потокобезопасный Double check locking Singleton.
+ */
 public final class DCLSingleton {
     private static volatile DCLSingleton inst;
 
