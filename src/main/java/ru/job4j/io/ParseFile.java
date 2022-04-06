@@ -3,7 +3,7 @@ package ru.job4j.io;
 import java.io.*;
 import java.util.function.Predicate;
 
-public class ParseFile {
+public final class ParseFile {
     private final File file;
     private final ContentSaver saver;
 
