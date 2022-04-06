@@ -12,10 +12,6 @@ public class ParseFile {
         this.saver = saver;
     }
 
-    public synchronized void setFile(File f) {
-        file = f;
-    }
-
     public synchronized File getFile() {
         return file;
     }
