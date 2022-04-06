@@ -37,5 +37,6 @@ public final class ParseFile {
     }
 
     public void saveContent(String content) {
+        saver.save(content);
     }
 }
