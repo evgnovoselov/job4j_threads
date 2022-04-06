@@ -4,7 +4,13 @@ import java.io.*;
 import java.util.function.Predicate;
 
 public class ParseFile {
-    private File file;
+    private final File file;
+    private final ContentSaver saver;
+
+    public ParseFile(File file, ContentSaver saver) {
+        this.file = file;
+        this.saver = saver;
+    }
 
     public synchronized void setFile(File f) {
         file = f;
@@ -39,12 +45,5 @@ public class ParseFile {
     }
 
     public void saveContent(String content) {
-        try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
-            for (int i = 0; i < content.length(); i += 1) {
-                out.write(content.charAt(i));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
