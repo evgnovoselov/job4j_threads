@@ -12,10 +12,6 @@ public final class ParseFile {
         this.saver = saver;
     }
 
-    public synchronized File getFile() {
-        return file;
-    }
-
     public String getContent() {
         return getContentByPredicate(character -> true);
     }
