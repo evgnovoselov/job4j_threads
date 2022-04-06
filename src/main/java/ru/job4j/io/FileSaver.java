@@ -2,7 +2,7 @@ package ru.job4j.io;
 
 import java.io.*;
 
-public class FileSaver implements ContentSaver {
+public final class FileSaver implements ContentSaver {
     private final File file;
 
     public FileSaver(File file) {
@@ -10,7 +10,7 @@ public class FileSaver implements ContentSaver {
     }
 
     @Override
-    public void save(String content) {
+    public synchronized void save(String content) {
         try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
             for (int i = 0; i < content.length(); i += 1) {
                 out.write(content.charAt(i));
