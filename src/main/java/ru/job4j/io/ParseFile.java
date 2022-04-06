@@ -41,10 +41,13 @@ public class ParseFile {
         return output.toString();
     }
 
-    public void saveContent(String content) throws IOException {
-        OutputStream out = new FileOutputStream(file);
-        for (int i = 0; i < content.length(); i += 1) {
-            out.write(content.charAt(i));
+    public void saveContent(String content) {
+        try (OutputStream out = new FileOutputStream(file)) {
+            for (int i = 0; i < content.length(); i += 1) {
+                out.write(content.charAt(i));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
