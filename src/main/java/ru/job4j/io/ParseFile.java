@@ -15,7 +15,7 @@ public class ParseFile {
 
     public String getContent() {
         StringBuilder output = new StringBuilder();
-        try (InputStream in = new FileInputStream(file)) {
+        try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
             int data;
             while ((data = in.read()) > 0) {
                 output.append((char) data);
@@ -28,7 +28,7 @@ public class ParseFile {
 
     public String getContentWithoutUnicode() {
         StringBuilder output = new StringBuilder();
-        try (InputStream in = new FileInputStream(file)) {
+        try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
             int data;
             while ((data = in.read()) > 0) {
                 if (data < 0x80) {
@@ -42,7 +42,7 @@ public class ParseFile {
     }
 
     public void saveContent(String content) {
-        try (OutputStream out = new FileOutputStream(file)) {
+        try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
             for (int i = 0; i < content.length(); i += 1) {
                 out.write(content.charAt(i));
             }
