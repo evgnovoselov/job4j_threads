@@ -5,22 +5,20 @@ import java.util.function.Predicate;
 
 public final class ParseFile {
     private final File file;
-    private final ContentSaver saver;
 
-    public ParseFile(File file, ContentSaver saver) {
+    public ParseFile(File file) {
         this.file = file;
-        this.saver = saver;
     }
 
-    public String getContent() {
+    public synchronized String getContent() {
         return getContentByPredicate(character -> true);
     }
 
-    public String getContentWithoutUnicode() {
+    public synchronized String getContentWithoutUnicode() {
         return getContentByPredicate(character -> character < 0x80);
     }
 
-    public String getContentByPredicate(Predicate<Character> filter) {
+    public synchronized String getContentByPredicate(Predicate<Character> filter) {
         StringBuilder output = new StringBuilder();
         try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
             int data;
@@ -34,9 +32,5 @@ public final class ParseFile {
             e.printStackTrace();
         }
         return output.toString();
-    }
-
-    public void saveContent(String content) {
-        saver.save(content);
     }
 }
