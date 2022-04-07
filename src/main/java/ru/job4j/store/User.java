@@ -1,15 +1,9 @@
 package ru.job4j.store;
 
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.ThreadSafe;
-
 import java.util.Objects;
 
-@ThreadSafe
 public class User {
-    @GuardedBy("this")
     private final int id;
-    @GuardedBy("this")
     private final int amount;
 
     public User(int id, int amount) {
@@ -20,24 +14,24 @@ public class User {
         this.amount = amount;
     }
 
-    public synchronized int getId() {
+    public int getId() {
         return id;
     }
 
-    public synchronized int getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public static synchronized User of(User user) {
+    public static User of(User user) {
         return of(user.getId(), user.getAmount());
     }
 
-    public static synchronized User of(int id, int amount) {
+    public static User of(int id, int amount) {
         return new User(id, amount);
     }
 
     @Override
-    public synchronized boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
@@ -45,7 +39,7 @@ public class User {
     }
 
     @Override
-    public synchronized int hashCode() {
+    public int hashCode() {
         return Objects.hash(id, amount);
     }
 }
