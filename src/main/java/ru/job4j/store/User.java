@@ -16,4 +16,8 @@ public class User {
     public int getAmount() {
         return amount;
     }
+
+    public static User of(User user) {
+        return new User(user.getId(), user.getAmount());
+    }
 }
