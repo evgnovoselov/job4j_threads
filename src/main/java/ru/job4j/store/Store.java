@@ -1,5 +1,7 @@
 package ru.job4j.store;
 
+import java.util.Optional;
+
 public interface Store {
     boolean add(User user);
 
@@ -9,5 +11,5 @@ public interface Store {
 
     boolean transfer(int fromId, int toId, int amount);
 
-    User findById(int id);
+    Optional<User> findById(int id);
 }

@@ -1,5 +1,6 @@
 package ru.job4j.store;
 
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class UserStore implements Store {
@@ -26,7 +27,7 @@ public final class UserStore implements Store {
     }
 
     @Override
-    public User findById(int id) {
-        return null;
+    public Optional<User> findById(int id) {
+        return Optional.empty();
     }
 }
