@@ -6,4 +6,8 @@ public interface Store {
     boolean update(User user);
 
     boolean delete(User user);
+
+    boolean transfer(int fromId, int toId, int amount);
+
+    User findById(int id);
 }
