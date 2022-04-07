@@ -46,6 +46,7 @@ public class UserStoreTest {
     public void whenUpdateNotHaveUserThenNotUpdate() {
         Store store = new UserStore();
         assertFalse(store.update(new User(2, 500)));
+        assertEquals(List.of(), store.findAll());
     }
 
     @Test

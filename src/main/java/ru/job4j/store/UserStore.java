@@ -14,7 +14,12 @@ public final class UserStore implements Store {
 
     @Override
     public boolean update(User user) {
-        return false;
+        boolean result = false;
+        if (users.containsKey(user.getId())) {
+            users.put(user.getId(), user);
+            result = true;
+        }
+        return result;
     }
 
     @Override
@@ -29,7 +34,7 @@ public final class UserStore implements Store {
 
     @Override
     public Optional<User> findById(int id) {
-        return Optional.empty();
+        return Optional.of(User.of(users.get(id)));
     }
 
     @Override
