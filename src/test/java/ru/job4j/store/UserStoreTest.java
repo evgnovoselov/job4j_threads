@@ -25,7 +25,7 @@ public class UserStoreTest {
         Store store = new UserStore();
         store.add(new User(1, 50));
         store.add(new User(2, 200));
-        assertEquals(List.of(new User(1, 100), new User(2, 200)), store.findAll());
+        assertEquals(List.of(new User(1, 50), new User(2, 200)), store.findAll());
     }
 
     /**
