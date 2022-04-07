@@ -11,7 +11,7 @@ public class User {
             throw new IllegalArgumentException("Wrong User args");
         }
         this.id = id;
-        this.amount = amount;
+        setAmount(amount);
     }
 
     public int getId() {
