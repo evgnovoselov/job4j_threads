@@ -49,6 +49,29 @@ public class UserStoreTest {
         assertEquals(List.of(), store.findAll());
     }
 
+    /**
+     * Проверяем удаление пользователя в хранилище.
+     */
+    @Test
+    public void whenDeleteHaveUserInStoreThenDelete() {
+        Store store = new UserStore();
+        store.add(new User(1, 100));
+        store.add(new User(2, 200));
+        assertTrue(store.delete(new User(1, 100)));
+        assertEquals(List.of(new User(2, 200)), store.findAll());
+    }
+
+    /**
+     * Проверяем удаление пользователя которого нет в хранилище.
+     */
+    @Test
+    public void whenDeleteNotHaveUserInStoreThenNotDelete() {
+        Store store = new UserStore();
+        store.add(new User(1, 100));
+        assertFalse(store.delete(new User(2, 500)));
+        assertEquals(List.of(new User(1, 100)), store.findAll());
+    }
+
     @Test
     public void whenUserTransferMoneyThenWriteMoney() {
         Store store = new UserStore();
