@@ -2,7 +2,7 @@ package ru.job4j.store;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class UserStore implements Store {
+public final class UserStore implements Store {
     private final ConcurrentHashMap<Integer, User> users = new ConcurrentHashMap<>();
 
     @Override
