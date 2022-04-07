@@ -1,5 +1,6 @@
 package ru.job4j.store;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,5 +30,12 @@ public final class UserStore implements Store {
     @Override
     public Optional<User> findById(int id) {
         return Optional.empty();
+    }
+
+    @Override
+    public List<User> findAll() {
+        return users.values().stream()
+                .map(User::of)
+                .toList();
     }
 }

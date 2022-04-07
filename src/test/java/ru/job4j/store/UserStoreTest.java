@@ -2,6 +2,8 @@ package ru.job4j.store;
 
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class UserStoreTest {
@@ -10,6 +12,14 @@ public class UserStoreTest {
         Store store = new UserStore();
         assertTrue(store.add(new User(1, 50)));
         assertFalse(store.add(new User(1, 200)));
+    }
+
+    @Test
+    public void whenAdd2UsersAndFindAllThenGetUsers() {
+        Store store = new UserStore();
+        store.add(new User(1, 50));
+        store.add(new User(2, 200));
+        assertEquals(List.of(new User(1, 100), new User(2, 200)), store.findAll());
     }
 
     @Test
