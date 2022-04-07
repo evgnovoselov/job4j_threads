@@ -24,7 +24,7 @@ public final class UserStore implements Store {
 
     @Override
     public boolean delete(User user) {
-        return false;
+        return users.remove(user.getId(), user);
     }
 
     @Override
