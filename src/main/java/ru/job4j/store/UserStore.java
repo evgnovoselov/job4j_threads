@@ -29,7 +29,17 @@ public final class UserStore implements Store {
 
     @Override
     public boolean transfer(int fromId, int toId, int amount) {
-        return false;
+        boolean result = false;
+        User from = users.get(fromId);
+        User to = users.get(toId);
+        if (from != null && to != null && from.getAmount() > amount) {
+            User fromTransferred = new User(from.getId(), from.getAmount() - amount);
+            User toTransferred = new User(to.getId(), to.getAmount() + amount);
+            update(fromTransferred);
+            update(toTransferred);
+            result = true;
+        }
+        return result;
     }
 
     @Override

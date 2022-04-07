@@ -72,6 +72,20 @@ public class UserStoreTest {
         assertEquals(List.of(new User(1, 100)), store.findAll());
     }
 
+    /**
+     * Когда пользователь переводит деньги несуществуемому пользователю.
+     */
+    @Test
+    public void whenUserTransferMoneyToNullThenTransferredFalse() {
+        Store store = new UserStore();
+        store.add(new User(1, 100));
+        assertFalse(store.transfer(1, 2, 50));
+        assertEquals(100, store.findById(1).orElseThrow().getAmount());
+    }
+
+    /**
+     * Пользователь переводит денег.
+     */
     @Test
     public void whenUserTransferMoneyThenWriteMoney() {
         Store store = new UserStore();
@@ -82,13 +96,15 @@ public class UserStoreTest {
         assertEquals(250, store.findById(2).orElseThrow().getAmount());
     }
 
+    /**
+     * Когда пользователю не хватает для перевода денег.
+     */
     @Test
     public void whenUserNoHaveMoneyForTransferThenNotTransfer() {
         Store store = new UserStore();
         store.add(new User(1, 50));
         store.add(new User(2, 200));
-        boolean actual = store.transfer(1, 2, 100);
-        assertFalse(actual);
+        assertFalse(store.transfer(1, 2, 100));
         assertEquals(50, store.findById(1).orElseThrow().getAmount());
         assertEquals(200, store.findById(2).orElseThrow().getAmount());
     }
