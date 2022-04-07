@@ -1,9 +1,13 @@
 package ru.job4j.store;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 public class UserStore implements Store {
+    private final ConcurrentHashMap<Integer, User> users = new ConcurrentHashMap<>();
+
     @Override
     public boolean add(User user) {
-        return false;
+        return users.putIfAbsent(user.getId(), user) == null;
     }
 
     @Override

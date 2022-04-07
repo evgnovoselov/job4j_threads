@@ -5,6 +5,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class UserStoreTest {
+    @Test
+    public void whenAddUsersSameIdThenNotAddSecondUser() {
+        Store store = new UserStore();
+        assertTrue(store.add(new User(1, 50)));
+        assertFalse(store.add(new User(1, 200)));
+    }
 
     @Test
     public void whenUserTransferMoneyThenWriteMoney() {
