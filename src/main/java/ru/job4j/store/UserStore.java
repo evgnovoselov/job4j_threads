@@ -15,4 +15,14 @@ public class UserStore implements Store {
     public boolean delete(User user) {
         return false;
     }
+
+    @Override
+    public boolean transfer(int fromId, int toId, int amount) {
+        return false;
+    }
+
+    @Override
+    public User findById(int id) {
+        return null;
+    }
 }
