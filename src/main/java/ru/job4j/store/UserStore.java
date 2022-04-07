@@ -9,14 +9,16 @@ public final class UserStore implements Store {
 
     @Override
     public boolean add(User user) {
-        return users.putIfAbsent(user.getId(), user) == null;
+        User copy = User.of(user);
+        return users.putIfAbsent(copy.getId(), copy) == null;
     }
 
     @Override
     public boolean update(User user) {
         boolean result = false;
-        if (users.containsKey(user.getId())) {
-            users.put(user.getId(), user);
+        User copy = User.of(user);
+        if (users.containsKey(copy.getId())) {
+            users.put(copy.getId(), copy);
             result = true;
         }
         return result;
@@ -33,8 +35,8 @@ public final class UserStore implements Store {
         User from = users.get(fromId);
         User to = users.get(toId);
         if (from != null && to != null && from.getAmount() > amount) {
-            User fromTransferred = new User(from.getId(), from.getAmount() - amount);
-            User toTransferred = new User(to.getId(), to.getAmount() + amount);
+            User fromTransferred = User.of(from.getId(), from.getAmount() - amount);
+            User toTransferred = User.of(to.getId(), to.getAmount() + amount);
             update(fromTransferred);
             update(toTransferred);
             result = true;
