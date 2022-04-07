@@ -43,10 +43,8 @@ public final class UserStore implements Store {
         User from = users.get(fromId);
         User to = users.get(toId);
         if (from != null && to != null && from.getAmount() > amount) {
-            User fromTransferred = User.of(from.getId(), from.getAmount() - amount);
-            User toTransferred = User.of(to.getId(), to.getAmount() + amount);
-            update(fromTransferred);
-            update(toTransferred);
+            from.setAmount(from.getAmount() - amount);
+            to.setAmount(to.getAmount() + amount);
             result = true;
         }
         return result;

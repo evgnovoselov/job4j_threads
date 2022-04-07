@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class User {
     private final int id;
-    private final int amount;
+    private int amount;
 
     public User(int id, int amount) {
         if (id <= 0 || amount < 0) {
@@ -22,12 +22,15 @@ public class User {
         return amount;
     }
 
-    public static User of(User user) {
-        return of(user.getId(), user.getAmount());
+    public void setAmount(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Wrong amount. Need more 0");
+        }
+        this.amount = amount;
     }
 
-    public static User of(int id, int amount) {
-        return new User(id, amount);
+    public static User of(User user) {
+        return new User(user.getId(), user.getAmount());
     }
 
     @Override
@@ -35,11 +38,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && amount == user.amount;
+        return id == user.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, amount);
+        return Objects.hash(id);
     }
 }
