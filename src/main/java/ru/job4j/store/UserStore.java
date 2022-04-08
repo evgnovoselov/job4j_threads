@@ -17,8 +17,7 @@ public final class UserStore implements Store {
 
     @Override
     public synchronized boolean add(User user) {
-        User copy = User.of(user);
-        return users.putIfAbsent(copy.getId(), copy) == null;
+        return users.putIfAbsent(user.getId(), user) == null;
     }
 
     @Override
