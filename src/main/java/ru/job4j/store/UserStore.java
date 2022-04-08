@@ -35,7 +35,7 @@ public final class UserStore implements Store {
         boolean result = false;
         User from = users.get(fromId);
         User to = users.get(toId);
-        if (from != null && to != null && from.getAmount() > amount) {
+        if (from != null && to != null && from.getAmount() >= amount) {
             from.setAmount(from.getAmount() - amount);
             to.setAmount(to.getAmount() + amount);
             result = true;
