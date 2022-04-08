@@ -1,27 +1,39 @@
 package ru.job4j.synch;
 
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 @ThreadSafe
 public class SingleLockList<T> implements Iterable<T> {
+    @GuardedBy("this")
     private final List<T> list;
 
+    public SingleLockList() {
+        list = new ArrayList<>();
+    }
+
     public SingleLockList(List<T> list) {
-        this.list = (List) list.clone();
+        this.list = new ArrayList<>(list);
     }
 
-    public void add(T value) {
+    public synchronized void add(T value) {
+        list.add(value);
     }
 
-    public T get(int index) {
-        return null;
+    public synchronized T get(int index) {
+        return list.get(index);
     }
 
     @Override
-    public Iterator<T> iterator() {
-        return null;
+    public synchronized Iterator<T> iterator() {
+        return copy(list).iterator();
+    }
+
+    private synchronized Iterable<T> copy(List<T> list) {
+        return new ArrayList<>(list);
     }
 }
