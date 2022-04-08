@@ -7,9 +7,6 @@ public class User {
     private int amount;
 
     public User(int id, int amount) {
-        if (id <= 0 || amount < 0) {
-            throw new IllegalArgumentException("Wrong User args");
-        }
         this.id = id;
         setAmount(amount);
     }
@@ -23,9 +20,6 @@ public class User {
     }
 
     public void setAmount(int amount) {
-        if (amount < 0) {
-            throw new IllegalArgumentException("Wrong amount. Need more 0");
-        }
         this.amount = amount;
     }
 
