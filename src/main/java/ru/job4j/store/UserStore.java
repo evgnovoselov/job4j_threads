@@ -17,19 +17,12 @@ public final class UserStore implements Store {
 
     @Override
     public synchronized boolean add(User user) {
-        User copy = User.of(user);
-        return users.putIfAbsent(copy.getId(), copy) == null;
+        return users.putIfAbsent(user.getId(), user) == null;
     }
 
     @Override
     public synchronized boolean update(User user) {
-        boolean result = false;
-        User copy = User.of(user);
-        if (users.containsKey(copy.getId())) {
-            users.put(copy.getId(), copy);
-            result = true;
-        }
-        return result;
+        return users.replace(user.getId(), user) != null;
     }
 
     @Override
@@ -42,7 +35,7 @@ public final class UserStore implements Store {
         boolean result = false;
         User from = users.get(fromId);
         User to = users.get(toId);
-        if (from != null && to != null && from.getAmount() > amount) {
+        if (from != null && to != null && from.getAmount() >= amount) {
             from.setAmount(from.getAmount() - amount);
             to.setAmount(to.getAmount() + amount);
             result = true;
