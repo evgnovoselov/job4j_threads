@@ -6,14 +6,14 @@ public class CountBarrierDemo {
         CountBarrier countBarrier = new CountBarrier(total);
         Thread master = new Thread(() -> {
             System.out.println(Thread.currentThread().getName() + " started");
-            try {
-                for (int i = 0; i < total; i++) {
-                    System.out.println(i);
-                    countBarrier.count();
+            for (int i = 0; i < total; i++) {
+                System.out.println(i);
+                countBarrier.count();
+                try {
                     Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
             }
         }, "Master");
         Thread slave1 = new Thread(() -> {
