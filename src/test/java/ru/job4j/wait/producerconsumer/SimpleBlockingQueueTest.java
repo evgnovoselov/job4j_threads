@@ -6,12 +6,19 @@ import static org.junit.Assert.*;
 
 public class SimpleBlockingQueueTest {
     /**
-     * TODO Комментарий.
+     * Вводим значение в блокирующую очередь.
      */
     @Test
     public void offer() {
-        Thread producer = new Thread();
-        Thread consumer = new Thread();
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(3);
+        Thread producer = new Thread(() -> {
+            queue.offer(1);
+            queue.offer(2);
+        });
+        Thread consumer = new Thread(() -> {
+            System.out.println(queue.poll());
+            System.out.println(queue.poll());
+        });
         assertTrue(true);
     }
 
