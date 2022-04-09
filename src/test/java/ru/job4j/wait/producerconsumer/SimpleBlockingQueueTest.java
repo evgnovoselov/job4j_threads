@@ -13,7 +13,7 @@ public class SimpleBlockingQueueTest {
      */
     @Test
     public void whenOfferNumsThenNums() throws InterruptedException {
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(1);
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(2);
         List<Integer> nums = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         List<Integer> actual = new ArrayList<>();
         Thread producer = new Thread(() -> {
