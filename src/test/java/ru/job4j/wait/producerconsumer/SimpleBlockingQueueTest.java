@@ -30,4 +30,31 @@ public class SimpleBlockingQueueTest {
         consumer.join();
         assertEquals(nums, actual);
     }
+
+    /**
+     * Проверка статуса ожидания нити вставки, больше лимита.
+     */
+    @Test
+    public void whenOfferNumsMoreLimitThenThreadStatusWait() throws InterruptedException {
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(1);
+        List<Integer> nums = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        Thread producer = new Thread(() -> {
+            nums.forEach(queue::offer);
+        });
+        producer.start();
+        producer.join(100);
+        assertEquals(Thread.State.WAITING, producer.getState());
+    }
+
+    /**
+     * Проверка статуса ожидания нити получения, когда элементов нет.
+     */
+    @Test
+    public void whenGiveThenThreadStatusWait() throws InterruptedException {
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(2);
+        Thread consumer = new Thread(queue::poll);
+        consumer.start();
+        consumer.join(100);
+        assertEquals(Thread.State.WAITING, consumer.getState());
+    }
 }
