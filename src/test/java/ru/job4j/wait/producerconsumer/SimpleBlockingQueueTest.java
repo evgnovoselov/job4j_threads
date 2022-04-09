@@ -2,37 +2,32 @@ package ru.job4j.wait.producerconsumer;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class SimpleBlockingQueueTest {
     /**
-     * Вводим значение в блокирующую очередь.
+     * Проверка ввода и получение информации с блокирующей очереди.
      */
     @Test
-    public void offer() throws InterruptedException {
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(3);
+    public void whenOfferNumsThenNums() throws InterruptedException {
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(1);
+        List<Integer> nums = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        List<Integer> actual = new ArrayList<>();
         Thread producer = new Thread(() -> {
-            queue.offer(1);
-            queue.offer(2);
-            queue.offer(3);
-            queue.offer(4);
+            nums.forEach(queue::offer);
         });
         Thread consumer = new Thread(() -> {
-            System.out.println(queue.poll());
-            System.out.println(queue.poll());
+            for (int i = 0; i < nums.size(); i++) {
+                actual.add(queue.poll());
+            }
         });
         producer.start();
         consumer.start();
         producer.join();
         consumer.join();
-        assertTrue(true);
-    }
-
-    /**
-     * TODO Комментарий.
-     */
-    @Test
-    public void poll() {
-        assertTrue(true);
+        assertEquals(nums, actual);
     }
 }
