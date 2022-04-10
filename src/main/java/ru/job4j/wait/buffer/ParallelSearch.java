@@ -8,7 +8,6 @@ public class ParallelSearch {
         final Thread consumer = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
-                    Thread.sleep(1000);
                     System.out.println(queue.poll());
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
@@ -16,7 +15,7 @@ public class ParallelSearch {
             }
         });
         consumer.start();
-        new Thread(() -> {
+        final Thread producer = new Thread(() -> {
             for (int index = 0; index < 3; index++) {
                 try {
                     queue.offer(index);
@@ -26,7 +25,13 @@ public class ParallelSearch {
                     Thread.currentThread().interrupt();
                 }
             }
-        }).start();
+        });
+        producer.start();
+        try {
+            producer.join();
+        } catch (InterruptedException e) {
+            producer.interrupt();
+        }
         while (!consumer.isInterrupted() && consumer.getState() != Thread.State.WAITING) {
             try {
                 Thread.sleep(1000);
