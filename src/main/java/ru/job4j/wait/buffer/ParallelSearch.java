@@ -4,13 +4,13 @@ import ru.job4j.wait.producerconsumer.SimpleBlockingQueue;
 
 public class ParallelSearch {
     public static void main(String[] args) {
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(10);
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(1);
         final Thread consumer = new Thread(() -> {
-            while (true) {
+            while (!Thread.currentThread().isInterrupted()) {
                 try {
+                    Thread.sleep(1000);
                     System.out.println(queue.poll());
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
                     Thread.currentThread().interrupt();
                 }
             }
@@ -26,6 +26,14 @@ public class ParallelSearch {
                     Thread.currentThread().interrupt();
                 }
             }
+            while (!consumer.isInterrupted() && consumer.getState() != Thread.State.WAITING) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+            consumer.interrupt();
         }).start();
     }
 }
