@@ -17,11 +17,21 @@ public class SimpleBlockingQueueTest {
         List<Integer> nums = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         List<Integer> actual = new ArrayList<>();
         Thread producer = new Thread(() -> {
-            nums.forEach(queue::offer);
+            try {
+                for (Integer num : nums) {
+                    queue.offer(num);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         });
         Thread consumer = new Thread(() -> {
             for (int i = 0; i < nums.size(); i++) {
-                actual.add(queue.poll());
+                try {
+                    actual.add(queue.poll());
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
         });
         producer.start();
@@ -39,7 +49,13 @@ public class SimpleBlockingQueueTest {
         SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(1);
         List<Integer> nums = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         Thread producer = new Thread(() -> {
-            nums.forEach(queue::offer);
+            try {
+                for (Integer num : nums) {
+                    queue.offer(num);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         });
         producer.start();
         producer.join(100);
@@ -52,7 +68,13 @@ public class SimpleBlockingQueueTest {
     @Test
     public void whenGiveThenThreadStatusWait() throws InterruptedException {
         SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(2);
-        Thread consumer = new Thread(queue::poll);
+        Thread consumer = new Thread(() -> {
+            try {
+                queue.poll();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
         consumer.start();
         consumer.join(100);
         assertEquals(Thread.State.WAITING, consumer.getState());
