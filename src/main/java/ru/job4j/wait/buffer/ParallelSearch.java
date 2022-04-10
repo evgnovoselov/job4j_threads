@@ -26,14 +26,14 @@ public class ParallelSearch {
                     Thread.currentThread().interrupt();
                 }
             }
-            while (!consumer.isInterrupted() && consumer.getState() != Thread.State.WAITING) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-            consumer.interrupt();
         }).start();
+        while (!consumer.isInterrupted() && consumer.getState() != Thread.State.WAITING) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        consumer.interrupt();
     }
 }
