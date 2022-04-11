@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.junit.Assert.assertEquals;
 
@@ -78,5 +79,35 @@ public class SimpleBlockingQueueTest {
         consumer.start();
         consumer.join(100);
         assertEquals(Thread.State.WAITING, consumer.getState());
+    }
+
+    /**
+     * TODO Поправить комментарий и название метода.
+     */
+    @Test
+    public void whenThen() {
+        final CopyOnWriteArrayList<Integer> buffer = new CopyOnWriteArrayList<>();
+        final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(1);
+        Thread producer = new Thread(() -> {
+            for (int i = 0; i < 5 && !Thread.interrupted(); i++) {
+                try {
+                    queue.offer(i);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
+        producer.start();
+        Thread consumer = new Thread(() -> {
+            while (!queue.isEmpty() || !Thread.interrupted()) {
+                try {
+                    buffer.add(queue.poll());
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
+        consumer.start();
+        assertEquals(buffer, List.of(0, 1, 2, 3, 4));
     }
 }
