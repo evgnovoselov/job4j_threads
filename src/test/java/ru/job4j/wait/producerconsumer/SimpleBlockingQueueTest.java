@@ -9,6 +9,40 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static org.junit.Assert.assertEquals;
 
 public class SimpleBlockingQueueTest {
+
+    /**
+     * Проверка работы блокирующей очереди.
+     */
+    @Test
+    public void whenFetchAllThenGetIt() throws InterruptedException {
+        final CopyOnWriteArrayList<Integer> buffer = new CopyOnWriteArrayList<>();
+        final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(1);
+        Thread producer = new Thread(() -> {
+            for (int i = 0; i < 5 && !Thread.interrupted(); i++) {
+                try {
+                    queue.offer(i);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
+        producer.start();
+        Thread consumer = new Thread(() -> {
+            while (!queue.isEmpty() || !Thread.interrupted()) {
+                try {
+                    buffer.add(queue.poll());
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
+        consumer.start();
+        producer.join();
+        consumer.interrupt();
+        consumer.join();
+        assertEquals(List.of(0, 1, 2, 3, 4), buffer);
+    }
+
     /**
      * Проверка ввода и получение информации с блокирующей очереди.
      */
@@ -27,7 +61,7 @@ public class SimpleBlockingQueueTest {
             }
         });
         Thread consumer = new Thread(() -> {
-            for (int i = 0; i < nums.size(); i++) {
+            while (!queue.isEmpty() || !Thread.interrupted()) {
                 try {
                     actual.add(queue.poll());
                 } catch (InterruptedException e) {
@@ -38,6 +72,7 @@ public class SimpleBlockingQueueTest {
         producer.start();
         consumer.start();
         producer.join();
+        consumer.interrupt();
         consumer.join();
         assertEquals(nums, actual);
     }
@@ -79,38 +114,5 @@ public class SimpleBlockingQueueTest {
         consumer.start();
         consumer.join(100);
         assertEquals(Thread.State.WAITING, consumer.getState());
-    }
-
-    /**
-     * Проверка работы блокирующей очереди.
-     */
-    @Test
-    public void whenFetchAllThenGetIt() throws InterruptedException {
-        final CopyOnWriteArrayList<Integer> buffer = new CopyOnWriteArrayList<>();
-        final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(1);
-        Thread producer = new Thread(() -> {
-            for (int i = 0; i < 5 && !Thread.interrupted(); i++) {
-                try {
-                    queue.offer(i);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        });
-        producer.start();
-        Thread consumer = new Thread(() -> {
-            while (!queue.isEmpty() || !Thread.interrupted()) {
-                try {
-                    buffer.add(queue.poll());
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        });
-        consumer.start();
-        producer.join();
-        consumer.interrupt();
-        consumer.join();
-        assertEquals(List.of(0, 1, 2, 3, 4), buffer);
     }
 }
