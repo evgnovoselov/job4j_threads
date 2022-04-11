@@ -82,10 +82,10 @@ public class SimpleBlockingQueueTest {
     }
 
     /**
-     * TODO Поправить комментарий и название метода.
+     * Проверка работы блокирующей очереди.
      */
     @Test
-    public void whenThen() {
+    public void whenFetchAllThenGetIt() throws InterruptedException {
         final CopyOnWriteArrayList<Integer> buffer = new CopyOnWriteArrayList<>();
         final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(1);
         Thread producer = new Thread(() -> {
@@ -108,6 +108,9 @@ public class SimpleBlockingQueueTest {
             }
         });
         consumer.start();
-        assertEquals(buffer, List.of(0, 1, 2, 3, 4));
+        producer.join();
+        consumer.interrupt();
+        consumer.join();
+        assertEquals(List.of(0, 1, 2, 3, 4), buffer);
     }
 }
