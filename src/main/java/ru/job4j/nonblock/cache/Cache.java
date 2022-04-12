@@ -29,6 +29,6 @@ public class Cache {
     }
 
     public Base get(int id) {
-        return memory.computeIfPresent(id, (integer, base) -> Base.of(base));
+        return memory.get(id);
     }
 }
