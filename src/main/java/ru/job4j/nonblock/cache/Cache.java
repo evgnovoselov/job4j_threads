@@ -25,16 +25,10 @@ public class Cache {
     }
 
     public void delete(Base model) {
-        memory.computeIfPresent(model.getId(), (integer, base) -> {
-            if (base.getVersion() != model.getVersion()) {
-                throw new OptimisticException("Versions are not equal.");
-            }
-            memory.remove(base.getId(), base);
-            return base;
-        });
+        memory.remove(model.getId(), model);
     }
 
     public Base get(int id) {
-        return memory.computeIfPresent(id, (integer, base) -> Base.of(base));
+        return memory.get(id);
     }
 }
