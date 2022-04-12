@@ -18,8 +18,7 @@ public class Cache {
             if (base.getVersion() != model.getVersion()) {
                 throw new OptimisticException("Versions are not equal.");
             }
-            Base tmp = new Base(model.getId(), model.getVersion() + 1);
-            tmp.setName(model.getName());
+            Base tmp = Base.of(model, model.getVersion() + 1);
             memory.put(tmp.getId(), tmp);
             return tmp;
         }) != null;
@@ -33,5 +32,9 @@ public class Cache {
             memory.remove(base.getId(), base);
             return base;
         });
+    }
+
+    public Base get(int id) {
+        return memory.computeIfPresent(id, (integer, base) -> Base.of(base));
     }
 }
