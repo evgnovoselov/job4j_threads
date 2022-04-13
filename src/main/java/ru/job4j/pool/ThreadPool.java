@@ -32,7 +32,11 @@ public class ThreadPool {
      * @param run Задача.
      */
     public void work(Runnable run) {
-
+        try {
+            tasks.offer(run);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     /**
