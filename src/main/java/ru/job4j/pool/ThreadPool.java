@@ -11,7 +11,7 @@ public class ThreadPool {
     private final SimpleBlockingQueue<Runnable> tasks;
 
     public ThreadPool() {
-        this(1000);
+        this(Runtime.getRuntime().availableProcessors());
     }
 
     public ThreadPool(int limitQueue) {
