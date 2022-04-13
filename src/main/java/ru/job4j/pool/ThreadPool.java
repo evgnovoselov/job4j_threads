@@ -24,6 +24,7 @@ public class ThreadPool {
                 Thread.currentThread().interrupt();
             }
         })));
+        threads.forEach(Thread::start);
     }
 
     /**
