@@ -17,13 +17,15 @@ public class ThreadPool {
     public ThreadPool(int limitQueue) {
         tasks = new SimpleBlockingQueue<>(limitQueue);
         int size = Runtime.getRuntime().availableProcessors();
-        IntStream.range(0, size).forEach(value -> threads.add(new Thread(() -> {
-            try {
-                tasks.poll().run();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        })));
+        for (int i = 0; i < size; i++) {
+            threads.add(new Thread(() -> {
+                try {
+                    tasks.poll().run();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }));
+        }
         threads.forEach(Thread::start);
     }
 
