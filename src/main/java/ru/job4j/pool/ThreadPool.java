@@ -4,14 +4,13 @@ import ru.job4j.wait.producerconsumer.SimpleBlockingQueue;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class ThreadPool {
     private final List<Thread> threads = new LinkedList<>();
     private final SimpleBlockingQueue<Runnable> tasks;
 
     public ThreadPool() {
-        this(1000);
+        this(Runtime.getRuntime().availableProcessors());
     }
 
     public ThreadPool(int limitQueue) {
@@ -36,11 +35,11 @@ public class ThreadPool {
      *
      * @param run Задача.
      */
-    public void work(Runnable run) {
+    public void work(Runnable run) throws InterruptedException {
         try {
             tasks.offer(run);
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            throw new InterruptedException(e.getMessage());
         }
     }
 
