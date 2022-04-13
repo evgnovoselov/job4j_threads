@@ -19,10 +19,12 @@ public class ThreadPool {
         int size = Runtime.getRuntime().availableProcessors();
         for (int i = 0; i < size; i++) {
             threads.add(new Thread(() -> {
-                try {
-                    tasks.poll().run();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
+                while (!Thread.interrupted()) {
+                    try {
+                        tasks.poll().run();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
             }));
         }
