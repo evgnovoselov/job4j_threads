@@ -7,13 +7,14 @@ import java.util.concurrent.RecursiveTask;
  * Поиск индекса объекта в массиве объектов с использованием пула.
  */
 public class ParallelIndexSearch<T> extends RecursiveTask<Integer> {
-    private final T object;
+    public static final int NO_HAVE = -1;
+    private final T search;
     private final T[] array;
     private final int from;
     private final int to;
 
-    public ParallelIndexSearch(T object, T[] array, int from, int to) {
-        this.object = object;
+    public ParallelIndexSearch(T search, T[] array, int from, int to) {
+        this.search = search;
         this.array = array;
         this.from = from;
         this.to = to;
@@ -21,12 +22,25 @@ public class ParallelIndexSearch<T> extends RecursiveTask<Integer> {
 
     @Override
     protected Integer compute() {
-        return null;
+        if (array[from].equals(search)) {
+            return from;
+        }
+        if (from == to) {
+            return NO_HAVE;
+        }
+        int mid = (from + to) / 2;
+        ParallelIndexSearch<T> leftSearch = new ParallelIndexSearch<>(search, array, from, mid);
+        ParallelIndexSearch<T> rightSearch = new ParallelIndexSearch<>(search, array, mid + 1, to);
+        leftSearch.fork();
+        rightSearch.fork();
+        int left = leftSearch.join();
+        int right = rightSearch.join();
+        return (left != NO_HAVE) ? left : right;
     }
 
-    public static <T> int search(T object, T[] array) {
+    public static <T> int search(T search, T[] array) {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
-        return forkJoinPool.invoke(new ParallelIndexSearch<T>(object, array, 0, array.length - 1));
+        return forkJoinPool.invoke(new ParallelIndexSearch<>(search, array, 0, array.length - 1));
     }
 
 }
