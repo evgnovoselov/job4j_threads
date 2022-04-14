@@ -39,8 +39,19 @@ public class ParallelIndexSearch<T> extends RecursiveTask<Integer> {
     }
 
     public static <T> int search(T search, T[] array) {
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        return forkJoinPool.invoke(new ParallelIndexSearch<>(search, array, 0, array.length - 1));
+        int result = ParallelIndexSearch.NO_HAVE;
+        if (array.length > 10) {
+            ForkJoinPool forkJoinPool = new ForkJoinPool();
+            result = forkJoinPool.invoke(new ParallelIndexSearch<>(search, array, 0, array.length - 1));
+        } else {
+            for (int index = 0; index < array.length; index++) {
+                if (search.equals(array[index])) {
+                    result = index;
+                    break;
+                }
+            }
+        }
+        return result;
     }
 
 }

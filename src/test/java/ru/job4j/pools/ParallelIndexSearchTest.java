@@ -13,7 +13,7 @@ public class ParallelIndexSearchTest {
      */
     @Test
     public void whenHaveObjectInArrayThenGetIndex() {
-        Integer[] nums = new Integer[]{5, 6, 4, 7, 3, 8, 2, 9, 1, 0};
+        Integer[] nums = new Integer[]{5, 6, 4, 7, 3, 8, 2, 9, 1, 0, 13, 11, 12};
         assertEquals(3, ParallelIndexSearch.search(7, nums));
     }
 
@@ -22,7 +22,7 @@ public class ParallelIndexSearchTest {
      */
     @Test
     public void whenNotHaveObjectInArrayThenGetNOHAVE() {
-        Integer[] nums = new Integer[]{5, 6, 4, 10, 3, 8, 2, 9, 1, 0};
+        Integer[] nums = new Integer[]{5, 6, 4, 10, 3, 8, 2, 9, 1, 0, 13, 11, 12};
         assertEquals(ParallelIndexSearch.NO_HAVE, ParallelIndexSearch.search(7, nums));
     }
 
@@ -31,7 +31,16 @@ public class ParallelIndexSearchTest {
      */
     @Test
     public void whenArrayIsEmptyThenGetNOHAVE() {
-        Integer[] nums = new Integer[]{5, 6, 4, 10, 3, 8, 2, 9, 1, 0};
+        Integer[] nums = new Integer[]{};
         assertEquals(ParallelIndexSearch.NO_HAVE, ParallelIndexSearch.search(7, nums));
+    }
+
+    /**
+     * Проверяем когда массив маленький.
+     */
+    @Test
+    public void whenArrayIsLittleThenGetIndex() {
+        Integer[] nums = new Integer[]{5, 6, 4, 7, 3, 8,};
+        assertEquals(3, ParallelIndexSearch.search(7, nums));
     }
 }
