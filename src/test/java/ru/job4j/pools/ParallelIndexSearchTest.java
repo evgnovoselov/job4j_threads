@@ -40,7 +40,7 @@ public class ParallelIndexSearchTest {
      */
     @Test
     public void whenArrayIsLittleThenGetIndex() {
-        Integer[] nums = new Integer[]{5, 6, 4, 7, 3, 8,};
+        Integer[] nums = new Integer[]{5, 6, 4, 7, 3, 8};
         assertEquals(3, ParallelIndexSearch.search(7, nums));
     }
 }
