@@ -20,13 +20,15 @@ public class ParallelIndexSearch<T> extends RecursiveTask<Integer> {
         this.to = to;
     }
 
+    /**
+     * Параллельный поиск, когда массив становится по длине меньше или равно 10, используется линейный поиск.
+     *
+     * @return Индекс элемента или константа NO_HAVE, если элемент отсутствует.
+     */
     @Override
     protected Integer compute() {
-        if (array[from].equals(search)) {
-            return from;
-        }
-        if (from == to) {
-            return NO_HAVE;
+        if ((to - from) <= 10) {
+            return linearSearch();
         }
         int mid = (from + to) / 2;
         ParallelIndexSearch<T> leftSearch = new ParallelIndexSearch<>(search, array, from, mid);
@@ -36,6 +38,17 @@ public class ParallelIndexSearch<T> extends RecursiveTask<Integer> {
         int left = leftSearch.join();
         int right = rightSearch.join();
         return (left != NO_HAVE) ? left : right;
+    }
+
+    private int linearSearch() {
+        int result = NO_HAVE;
+        for (int index = from; index <= to; index++) {
+            if (search.equals(array[index])) {
+                result = index;
+                break;
+            }
+        }
+        return result;
     }
 
     public static <T> int search(T search, T[] array) {
