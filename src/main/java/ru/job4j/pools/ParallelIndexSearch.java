@@ -37,7 +37,7 @@ public class ParallelIndexSearch<T> extends RecursiveTask<Integer> {
         rightSearch.fork();
         int left = leftSearch.join();
         int right = rightSearch.join();
-        return (left != NO_HAVE) ? left : right;
+        return Math.max(left, right);
     }
 
     private int linearSearch() {
