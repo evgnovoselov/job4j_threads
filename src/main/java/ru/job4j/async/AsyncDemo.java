@@ -92,7 +92,7 @@ public class AsyncDemo {
 
     public static void thenCombineExample() throws InterruptedException, ExecutionException {
         CompletableFuture<String> result = buyProduct("Молоко")
-                .thenCombine(buyProduct("Хлеб"), (p1, p2) -> "Куплены " + p1 + " и " + p2);
+                .thenCombine(buyProduct("Хлеб"), (r1, r2) -> "Куплены " + r1 + " и " + r2);
         iWork();
         System.out.println(result.get());
     }
