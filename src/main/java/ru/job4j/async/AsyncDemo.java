@@ -97,11 +97,28 @@ public class AsyncDemo {
         System.out.println(result.get());
     }
 
+    public static CompletableFuture<Void> washHands(String name) {
+        return CompletableFuture.runAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            System.out.println(name + ", моет руки.");
+        });
+    }
+
+    public static void allOfExample() throws InterruptedException {
+        CompletableFuture<Void> all = CompletableFuture.allOf(washHands("Папа"), washHands("Мама"),
+                washHands("Ваня"), washHands("Боря"));
+        TimeUnit.SECONDS.sleep(3);
+    }
+
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         String[] actions = new String[]{"runAsyncExample", "supplyAsyncExample",
                 "thenRunExample", "thenAcceptExample", "thenApplyExample",
-                "thenComposeExample", "thenCombineExample"};
-        String action = actions[6];
+                "thenComposeExample", "thenCombineExample", "allOfExample"};
+        String action = actions[7];
         if (action.equals(actions[0])) {
             runAsyncExample();
         }
@@ -122,6 +139,9 @@ public class AsyncDemo {
         }
         if (action.equals(actions[6])) {
             thenCombineExample();
+        }
+        if (action.equals(actions[7])) {
+            allOfExample();
         }
     }
 }
