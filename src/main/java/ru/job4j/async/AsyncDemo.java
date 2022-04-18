@@ -85,10 +85,15 @@ public class AsyncDemo {
         System.out.println(bp.get());
     }
 
+    public static void thenComposeExample() throws InterruptedException {
+        CompletableFuture<Void> result = buyProduct("Молоко").thenCompose(a -> goToTrash());
+        iWork();
+    }
+
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         String[] actions = new String[]{"runAsyncExample", "supplyAsyncExample",
-                "thenRunExample", "thenAcceptExample", "thenApplyExample"};
-        String action = actions[4];
+                "thenRunExample", "thenAcceptExample", "thenApplyExample", "thenComposeExample"};
+        String action = actions[5];
         if (action.equals(actions[0])) {
             runAsyncExample();
         }
@@ -103,6 +108,9 @@ public class AsyncDemo {
         }
         if (action.equals(actions[4])) {
             thenApplyExample();
+        }
+        if (action.equals(actions[5])) {
+            thenComposeExample();
         }
     }
 }
