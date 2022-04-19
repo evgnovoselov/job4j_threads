@@ -1,5 +1,9 @@
 package ru.job4j.async;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -133,37 +137,92 @@ public class AsyncDemo {
         System.out.println(first.get());
     }
 
+    /**
+     * Считаем сумму диагоналей матрицы, асинхронно.
+     *
+     * @param matrix Матрица.
+     * @return Массив сум диагоналей матрицы.
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
+    public static int[] asyncSum(int[][] matrix) throws ExecutionException, InterruptedException {
+        int n = matrix.length;
+        int[] sums = new int[2 * n];
+        Map<Integer, CompletableFuture<Integer>> futures = new HashMap<>();
+        futures.put(0, getTask(matrix, 0, n - 1, n - 1));
+        for (int k = 1; k <= n; k++) {
+            futures.put(k, getTask(matrix, 0, k - 1, k - 1));
+            if (k < n) {
+                futures.put(2 * n - k, getTask(matrix, n - k, n - 1, n - 1));
+            }
+        }
+        for (Integer key : futures.keySet()) {
+            sums[key] = futures.get(key).get();
+        }
+        return sums;
+    }
+
+    public static CompletableFuture<Integer> getTask(int[][] data, int startRow, int endRow, int startCol) {
+        return CompletableFuture.supplyAsync(() -> {
+            int sum = 0;
+            int col = startCol;
+            for (int i = startRow; i <= endRow; i++) {
+                sum += data[i][col];
+                col--;
+            }
+            return sum;
+        });
+    }
+
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         String[] actions = new String[]{"runAsyncExample", "supplyAsyncExample",
                 "thenRunExample", "thenAcceptExample", "thenApplyExample",
-                "thenComposeExample", "thenCombineExample", "allOfExample", "anyOfExample"};
-        String action = actions[8];
-        if (action.equals(actions[0])) {
-            runAsyncExample();
-        }
-        if (action.equals(actions[1])) {
-            supplyAsyncExample();
-        }
-        if (action.equals(actions[2])) {
-            thenRunExample();
-        }
-        if (action.equals(actions[3])) {
-            thenAcceptExample();
-        }
-        if (action.equals(actions[4])) {
-            thenApplyExample();
-        }
-        if (action.equals(actions[5])) {
-            thenComposeExample();
-        }
-        if (action.equals(actions[6])) {
-            thenCombineExample();
-        }
-        if (action.equals(actions[7])) {
-            allOfExample();
-        }
-        if (action.equals(actions[8])) {
-            anyOfExample();
-        }
+                "thenComposeExample", "thenCombineExample", "allOfExample", "anyOfExample", "asyncSum"};
+        Scanner scanner = new Scanner(System.in);
+        int action = 0;
+        do {
+            System.out.println("Введите какой пример запустить или выберете выйти - 0");
+            System.out.println("Примеры:");
+            for (int i = 0; i < actions.length; i++) {
+                System.out.printf("%s) %s%n", i + 1, actions[i]);
+            }
+            System.out.printf("Выберите от %s до %s : ", 0, actions.length);
+            action = scanner.nextInt();
+            if (action == 1) {
+                runAsyncExample();
+            }
+            if (action == 2) {
+                supplyAsyncExample();
+            }
+            if (action == 3) {
+                thenRunExample();
+            }
+            if (action == 4) {
+                thenAcceptExample();
+            }
+            if (action == 5) {
+                thenApplyExample();
+            }
+            if (action == 6) {
+                thenComposeExample();
+            }
+            if (action == 7) {
+                thenCombineExample();
+            }
+            if (action == 8) {
+                allOfExample();
+            }
+            if (action == 9) {
+                anyOfExample();
+            }
+            if (action == 10) {
+                int[][] matrix = new int[][]{
+                        {1, 2, 3},
+                        {4, 5, 6},
+                        {7, 8, 9}
+                };
+                System.out.println(Arrays.toString(asyncSum(matrix)));
+            }
+        } while (action != 0);
     }
 }
