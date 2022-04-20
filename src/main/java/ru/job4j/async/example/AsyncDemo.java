@@ -1,4 +1,4 @@
-package ru.job4j.async;
+package ru.job4j.async.example;
 
 import java.util.Arrays;
 import java.util.HashMap;
