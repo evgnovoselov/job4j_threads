@@ -5,10 +5,18 @@ import java.util.Objects;
 /**
  * Класс считает суммы по строкам и столбцам квадратной матрицы.
  */
-public class RolColSum {
+public class RowColSum {
     public static class Sums {
         private int rowSum = 0;
         private int colSum = 0;
+
+        public Sums() {
+        }
+
+        public Sums(int rowSum, int colSum) {
+            this.rowSum = rowSum;
+            this.colSum = colSum;
+        }
 
         public int getRowSum() {
             return rowSum;
@@ -54,13 +62,13 @@ public class RolColSum {
 
     public static Sums[] sum(int[][] matrix) {
         Sums[] result = new Sums[matrix.length];
-        for (int i = 0; i < matrix.length; i++) {
-            if (result[i] == null) {
-                result[i] = new Sums();
-            }
-            for (int j = 0; j < matrix[i].length; j++) {
-                result[i].rowSum += matrix[i][j];
-                result[i].colSum += matrix[j][i];
+        for (int index = 0; index < result.length; index++) {
+            result[index] = new Sums();
+        }
+        for (int row = 0; row < matrix.length; row++) {
+            for (int col = 0; col < matrix[row].length; col++) {
+                result[row].rowSum += matrix[row][col];
+                result[col].colSum += matrix[row][col];
             }
         }
         return result;
