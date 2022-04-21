@@ -2,6 +2,8 @@ package ru.job4j.async;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 /**
@@ -19,8 +21,14 @@ public class RolColSumTest {
                 {7, 8, 9}
         };
         RolColSum.Sums[] actual = RolColSum.sum(matrix);
-        RolColSum.Sums[] expected = new RolColSum.Sums[0];
-        assertTrue(true);
+        RolColSum.Sums[] expected = new RolColSum.Sums[3];
+        expected[0].setColSum(10);
+        expected[0].setRowSum(10);
+        expected[1].setColSum(10);
+        expected[1].setRowSum(10);
+        expected[2].setColSum(10);
+        expected[2].setRowSum(10);
+        assertEquals(Arrays.stream(expected).toList(), Arrays.stream(actual).toList());
     }
 
     /**
