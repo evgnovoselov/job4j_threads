@@ -22,12 +22,15 @@ public class RolColSumTest {
         };
         RolColSum.Sums[] actual = RolColSum.sum(matrix);
         RolColSum.Sums[] expected = new RolColSum.Sums[3];
-        expected[0].setColSum(10);
-        expected[0].setRowSum(10);
-        expected[1].setColSum(10);
-        expected[1].setRowSum(10);
-        expected[2].setColSum(10);
-        expected[2].setRowSum(10);
+        for (int i = 0; i < expected.length; i++) {
+            expected[i] = new RolColSum.Sums();
+        }
+        expected[0].setRowSum(6);
+        expected[0].setColSum(12);
+        expected[1].setRowSum(15);
+        expected[1].setColSum(15);
+        expected[2].setRowSum(24);
+        expected[2].setColSum(18);
         assertEquals(Arrays.stream(expected).toList(), Arrays.stream(actual).toList());
     }
 
