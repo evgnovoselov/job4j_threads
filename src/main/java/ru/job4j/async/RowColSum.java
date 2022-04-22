@@ -1,6 +1,10 @@
 package ru.job4j.async;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Класс считает суммы по строкам и столбцам квадратной матрицы.
@@ -60,6 +64,12 @@ public class RowColSum {
         }
     }
 
+    /**
+     * Линейный подсчет суммы столбцов и строк квадратной матрицы.
+     *
+     * @param matrix Квадратная матрица.
+     * @return Массив суммы строк и столбцов.
+     */
     public static Sums[] sum(int[][] matrix) {
         Sums[] result = new Sums[matrix.length];
         for (int index = 0; index < result.length; index++) {
@@ -74,7 +84,34 @@ public class RowColSum {
         return result;
     }
 
-    public static Sums[] asyncSum(int[][] matrix) {
-        return new Sums[0];
+    /**
+     * Асинхронный подсчет суммы столбцов и строк квадратной матрицы.
+     *
+     * @param matrix Квадратная матрица.
+     * @return Массив суммы строк и столбцов.
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
+    public static Sums[] asyncSum(int[][] matrix) throws ExecutionException, InterruptedException {
+        Sums[] sumsRowCol = new Sums[matrix.length];
+        List<CompletableFuture<Sums>> futures = new ArrayList<>();
+        for (int index = 0; index < matrix.length; index++) {
+            futures.add(getSumRowColByIndex(matrix, index));
+        }
+        for (int index = 0; index < matrix.length; index++) {
+            sumsRowCol[index] = futures.get(index).get();
+        }
+        return sumsRowCol;
+    }
+
+    private static CompletableFuture<Sums> getSumRowColByIndex(int[][] matrix, int index) {
+        return CompletableFuture.supplyAsync(() -> {
+            Sums result = new Sums();
+            for (int i = 0; i < matrix.length; i++) {
+                result.rowSum += matrix[index][i];
+                result.colSum += matrix[i][index];
+            }
+            return result;
+        });
     }
 }
