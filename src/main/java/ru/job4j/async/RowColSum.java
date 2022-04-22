@@ -11,8 +11,8 @@ import java.util.concurrent.ExecutionException;
  */
 public class RowColSum {
     public static class Sums {
-        private int rowSum = 0;
-        private int colSum = 0;
+        private int rowSum;
+        private int colSum;
 
         public Sums() {
         }
@@ -72,11 +72,11 @@ public class RowColSum {
      */
     public static Sums[] sum(int[][] matrix) {
         Sums[] result = new Sums[matrix.length];
-        for (int index = 0; index < result.length; index++) {
-            result[index] = new Sums();
-        }
         for (int row = 0; row < matrix.length; row++) {
             for (int col = 0; col < matrix[row].length; col++) {
+                if (result[col] == null) {
+                    result[col] = new Sums();
+                }
                 result[row].rowSum += matrix[row][col];
                 result[col].colSum += matrix[row][col];
             }
