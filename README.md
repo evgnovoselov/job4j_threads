@@ -3,3 +3,5 @@
 [![codecov](https://codecov.io/gh/zkod/job4j_threads/branch/master/graph/badge.svg?token=U4MGYTGIZP)](https://codecov.io/gh/zkod/job4j_threads)
 
 Объединение зафиксированных изменений
+
+В курсе производилась работа с ветками git.
