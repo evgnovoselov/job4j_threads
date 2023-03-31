@@ -1,11 +1,3 @@
 # job4j_threads
-[![Java CI with Maven](https://github.com/zkod/job4j_threads/actions/workflows/maven.yml/badge.svg)](https://github.com/zkod/job4j_threads/actions/workflows/maven.yml)
-[![codecov](https://codecov.io/gh/zkod/job4j_threads/branch/master/graph/badge.svg?token=U4MGYTGIZP)](https://codecov.io/gh/zkod/job4j_threads)
-
-Объединение зафиксированных изменений
-
-В курсе производилась работа с ветками git.
-
-Создал ветку из IDEA и внес изменения в файл.
-
-Еще изменение с фиксацией --amend
+[![Java CI with Maven](https://github.com/evgnovoselov/job4j_threads/actions/workflows/maven.yml/badge.svg)](https://github.com/evgnovoselov/job4j_threads/actions/workflows/maven.yml)
+[![codecov](https://codecov.io/gh/evgnovoselov/job4j_threads/branch/master/graph/badge.svg?token=U4MGYTGIZP)](https://codecov.io/gh/evgnovoselov/job4j_threads)
